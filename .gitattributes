@@ -1,0 +1,24 @@
+################################################################################
+# UnityStarterKit — Git LFS Hints (Commented Out)
+#
+# This repository is a *template repository*, so Git LFS must remain disabled.
+# When you create a NEW game project from this template, you may optionally
+# enable Git LFS for large binary assets.
+#
+# To enable LFS in a new project:
+#   git lfs install
+#   git lfs track "*.psd"
+#   git lfs track "*.png"
+#   git lfs track "*.jpg"
+#   git lfs track "*.fbx"
+#   git lfs track "*.anim"
+#   git lfs track "*.zip"
+#   git lfs track "*.wav"
+#   git lfs track "*.mp3"
+#   git lfs track "*.bundle"
+#   git lfs track "*.unity3d"
+#   git lfs track "*.asset"
+#   git lfs track "*.prefab"
+#
+# Don't track these in the template itself — GitHub forbids LFS in template repos.
+################################################################################
