@@ -4,12 +4,18 @@ using Debug = UnityEngine.Debug;
 
 namespace Core.Logs
 {
-    public class LoggerController
+    public static class Logger
     {
         [Conditional("LOGS")]
         public static void Log(string message)
         {
             Debug.Log(message);
+        }
+        
+        [Conditional("LOGS")]
+        public static void LogWarning(string message)
+        {
+            Debug.LogWarning(message);
         }
         
         [Conditional("LOGS")]

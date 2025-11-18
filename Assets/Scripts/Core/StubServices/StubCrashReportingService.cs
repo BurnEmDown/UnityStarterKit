@@ -1,8 +1,8 @@
 using System;
 using Core.Interfaces;
-using UnityEngine;
+using Logger = Core.Logs.Logger;
 
-namespace Core.Services
+namespace Core.StubServices
 {
     /// <summary>
     /// Crash reporting stub – logs messages/exceptions to the Unity console only.
@@ -11,12 +11,12 @@ namespace Core.Services
     {
         public void Log(string message)
         {
-            Debug.Log($"[Crash Stub] {message}");
+            Logger.Log($"[Crash Stub] {message}");
         }
 
         public void LogException(Exception exception)
         {
-            Debug.LogException(exception);
+            Logger.LogException(exception);
         }
     }
 }

@@ -1,7 +1,8 @@
 using Core.Interfaces;
 using UnityEngine;
+using Logger = Core.Logs.Logger;
 
-namespace Core.Services
+namespace Core.StubServices
 {
     /// <summary>
     /// Stub audio manager — logs calls instead of playing audio.
@@ -14,29 +15,29 @@ namespace Core.Services
 
         public void PlaySfx(string key)
         {
-            Debug.Log($"[Audio Stub] PlaySFX: {key} (vol={_sfxVolume})");
+            Logger.Log($"[Audio Stub] PlaySFX: {key} (vol={_sfxVolume})");
         }
 
         public void PlayMusic(string key, bool loop = true)
         {
-            Debug.Log($"[Audio Stub] PlayMusic: {key} (loop={loop}, vol={_musicVolume})");
+            Logger.Log($"[Audio Stub] PlayMusic: {key} (loop={loop}, vol={_musicVolume})");
         }
 
         public void StopMusic()
         {
-            Debug.Log("[Audio Stub] StopMusic()");
+            Logger.Log("[Audio Stub] StopMusic()");
         }
 
         public void SetSfxVolume(float volume)
         {
             _sfxVolume = Mathf.Clamp01(volume);
-            Debug.Log($"[Audio Stub] SfxVolume = {_sfxVolume}");
+            Logger.Log($"[Audio Stub] SfxVolume = {_sfxVolume}");
         }
 
         public void SetMusicVolume(float volume)
         {
             _musicVolume = Mathf.Clamp01(volume);
-            Debug.Log($"[Audio Stub] MusicVolume = {_musicVolume}");
+            Logger.Log($"[Audio Stub] MusicVolume = {_musicVolume}");
         }
     }
 }

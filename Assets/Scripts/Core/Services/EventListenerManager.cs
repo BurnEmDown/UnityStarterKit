@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using Core.Events;
 using Core.Interfaces;
 
-
-namespace Core.Managers
+namespace Core.Services
 {
     public class EventListenerManager : IEventListenerManager
     {

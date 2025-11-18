@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Core.Interfaces;
 using Core.Utils.Extensions;
+using UnityEngine;
+using Logger = Core.Logs.Logger;
 using Object = UnityEngine.Object;
 
-namespace Core.Managers
+namespace Core.Services
 {
-    public class PoolManager : BaseManager, IPoolManager
+    public class PoolManager : IPoolManager
     {
         private Dictionary<string, PoolData> pools = new Dictionary<string, PoolData>();
         
@@ -22,11 +23,11 @@ namespace Core.Managers
         
         public async void InitPool<T>(string originalName, int amount) where T : Component
         {
-            var generatedObjects = await Services.Get<IFactoryManager>().GenerateObjectsAsync<T>(originalName, amount);
+            var generatedObjects = await Services.Get<IObjectFactory>().CreateManyAsync<T>(originalName, amount);
 
             if (generatedObjects == null || !generatedObjects.Any())
             {
-                Debug.LogError($"Failed to generate objects for pool of item types {originalName}");
+                Logger.LogError($"Failed to generate objects for pool of item types {originalName}");
                 return;
             }
 
@@ -40,7 +41,7 @@ namespace Core.Managers
         {
             if (!pools.ContainsKey(poolName))
             {
-                Debug.LogError("No pool of type: " + poolName);
+                Logger.LogError("No pool of type: " + poolName);
                 onObjectReady(null);
                 return;
             }
@@ -48,12 +49,12 @@ namespace Core.Managers
             PoolData poolData = pools[poolName];
             if (!poolData.availableItems.Any())
             {
-                Services.Get<IFactoryManager>().GenerateObjectAsync<T>(poolName).ContinueWithOnMainThread(
+                Services.Get<IObjectFactory>().CreateAsync<T>(poolName).ContinueWithOnMainThread(
                     task =>
                     {
                         if (task.IsFaulted || task.Result == null)
                         {
-                            Debug.LogError("Failed to generate object asynchronously: " + task.Exception?.ToString());
+                            Logger.LogError("Failed to generate object asynchronously: " + task.Exception?.ToString());
                             onObjectReady(null);
                         }
                         else

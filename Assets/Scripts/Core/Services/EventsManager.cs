@@ -5,9 +5,9 @@ using System.Linq;
 using Core.Events;
 using Core.Interfaces;
 
-namespace Core.Managers
+namespace Core.Services
 {
-    public class EventsManager : BaseManager, IEventsManager
+    public class EventsManager : IEventsManager
     {
         private ConcurrentQueue<Action> actionQueue = new(); // Queue for actions
         private bool isProcessingQueue = false;

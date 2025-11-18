@@ -1,8 +1,8 @@
-using UnityEngine;
 using System.Collections.Generic;
 using Core.Interfaces;
+using Logger = Core.Logs.Logger;
 
-namespace Core.Services
+namespace Core.StubServices
 {
     /// <summary>
     /// Minimal localization stub.
@@ -23,7 +23,7 @@ namespace Core.Services
                 return value;
 
 #if UNITY_EDITOR
-            Debug.Log($"[Localization Stub] Get('{key}')");
+            Logger.Log($"[Localization Stub] Get('{key}')");
 #endif
 
             // Return the key itself as fallback
@@ -40,7 +40,7 @@ namespace Core.Services
             }
             catch
             {
-                Debug.LogWarning($"[Localization Stub] Format error for key '{key}'");
+                Logger.LogWarning($"[Localization Stub] Format error for key '{key}'");
                 return baseString;
             }
         }

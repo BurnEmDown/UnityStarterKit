@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Core.Managers
+namespace Core.Services
 {
     public static class Services
     {

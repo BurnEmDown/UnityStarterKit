@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Interfaces;
 using UnityEngine;
+using Logger = Core.Logs.Logger;
 
-namespace Core.Services
+namespace Core.StubServices
 {
     /// <summary>
     /// Remote config stub – returns default values and logs uses.
@@ -16,7 +17,7 @@ namespace Core.Services
 
         public Task InitializeAsync()
         {
-            Debug.Log("[RemoteConfig Stub] InitializeAsync called (no remote fetch).");
+            Logger.Log("[RemoteConfig Stub] InitializeAsync called (no remote fetch).");
             return Task.CompletedTask;
         }
 
@@ -25,7 +26,7 @@ namespace Core.Services
             if (_overrides.TryGetValue(key, out var value) && value is bool b)
                 return b;
 
-            Debug.Log($"[RemoteConfig Stub] GetBool('{key}') → {defaultValue} (default)");
+            Logger.Log($"[RemoteConfig Stub] GetBool('{key}') → {defaultValue} (default)");
             return defaultValue;
         }
 
@@ -37,7 +38,7 @@ namespace Core.Services
                 if (value is float f) return Mathf.RoundToInt(f);
             }
 
-            Debug.Log($"[RemoteConfig Stub] GetInt('{key}') → {defaultValue} (default)");
+            Logger.Log($"[RemoteConfig Stub] GetInt('{key}') → {defaultValue} (default)");
             return defaultValue;
         }
 
@@ -49,7 +50,7 @@ namespace Core.Services
                 if (value is float f) return f;
             }
 
-            Debug.Log($"[RemoteConfig Stub] GetDouble('{key}') → {defaultValue} (default)");
+            Logger.Log($"[RemoteConfig Stub] GetDouble('{key}') → {defaultValue} (default)");
             return defaultValue;
         }
 
@@ -58,7 +59,7 @@ namespace Core.Services
             if (_overrides.TryGetValue(key, out var value) && value is string s)
                 return s;
 
-            Debug.Log($"[RemoteConfig Stub] GetString('{key}') → \"{defaultValue}\" (default)");
+            Logger.Log($"[RemoteConfig Stub] GetString('{key}') → \"{defaultValue}\" (default)");
             return defaultValue;
         }
 

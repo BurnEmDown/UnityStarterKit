@@ -1,10 +1,11 @@
 using System;
 using System.IO;
 using Core.Interfaces;
-using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine;
+using Logger = Core.Logs.Logger;
 
-namespace Core.Managers
+namespace Core.Services
 {
     /// <summary>
     /// JSON file-based save system using Newtonsoft.Json.
@@ -30,13 +31,13 @@ namespace Core.Managers
         {
             if (string.IsNullOrEmpty(slot))
             {
-                Debug.LogError("[SaveSystem] Save called with null/empty slot.");
+                Logger.LogError("[SaveSystem] Save called with null/empty slot.");
                 return;
             }
 
             if (data == null)
             {
-                Debug.LogError($"[SaveSystem] Save called for slot '{slot}' with null data.");
+                Logger.LogError($"[SaveSystem] Save called for slot '{slot}' with null data.");
                 return;
             }
 
@@ -58,12 +59,12 @@ namespace Core.Managers
                 File.WriteAllText(path, json);
 
 #if UNITY_EDITOR
-                Debug.Log($"[SaveSystem] Saved slot '{slot}' to: {path}");
+                Logger.Log($"[SaveSystem] Saved slot '{slot}' to: {path}");
 #endif
             }
             catch (Exception e)
             {
-                Debug.LogError($"[SaveSystem] Failed to save slot '{slot}': {e}");
+                Logger.LogError($"[SaveSystem] Failed to save slot '{slot}': {e}");
             }
         }
 
@@ -71,7 +72,7 @@ namespace Core.Managers
         {
             if (string.IsNullOrEmpty(slot))
             {
-                Debug.LogError("[SaveSystem] Load called with null/empty slot.");
+                Logger.LogError("[SaveSystem] Load called with null/empty slot.");
                 return defaultValue;
             }
 
@@ -80,7 +81,7 @@ namespace Core.Managers
             if (!File.Exists(path))
             {
 #if UNITY_EDITOR
-                Debug.Log($"[SaveSystem] No save found for slot '{slot}'. Returning default value.");
+                Logger.Log($"[SaveSystem] No save found for slot '{slot}'. Returning default value.");
 #endif
                 return defaultValue;
             }
@@ -92,14 +93,14 @@ namespace Core.Managers
 
                 if (container == null)
                 {
-                    Debug.LogWarning($"[SaveSystem] Failed to parse save for slot '{slot}'. Returning default.");
+                    Logger.LogWarning($"[SaveSystem] Failed to parse save for slot '{slot}'. Returning default.");
                     return defaultValue;
                 }
 
                 // Version check hook – migrations can be handled here later
                 if (container.Version != _version)
                 {
-                    Debug.LogWarning(
+                    Logger.LogWarning(
                         $"[SaveSystem] Save version mismatch for slot '{slot}'. " +
                         $"Save: {container.Version}, Current: {_version}. Returning payload as-is."
                     );
@@ -109,7 +110,7 @@ namespace Core.Managers
             }
             catch (Exception e)
             {
-                Debug.LogError($"[SaveSystem] Failed to load slot '{slot}': {e}");
+                Logger.LogError($"[SaveSystem] Failed to load slot '{slot}': {e}");
                 return defaultValue;
             }
         }

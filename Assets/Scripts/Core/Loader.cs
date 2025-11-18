@@ -1,14 +1,18 @@
+using System.Collections.Generic;
 using Core.Interfaces;
-using Core.Managers;
 using Core.Services;
+using Core.StubServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Core.Managers.Services;
+using static Core.Services.Services;
 
 namespace Core
 {
     public class Loader : MonoBehaviour
     {
+        // Add non-addressable prefabs here via Inspector if they need to be created via factory
+        public Dictionary<string, GameObject> PrefabMap;
+        
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -16,7 +20,7 @@ namespace Core
             Register<IEventsManager>(new EventsManager());
             Register<IEventListenerManager>(new EventListenerManager());
             //Register<ISceneLoader>(new SceneLoader());
-            Register<IFactoryManager>(new FactoryManager());
+            Register<IObjectFactory>(new CompositeFactory(new AddressablesFactory(), new PrefabFactory(PrefabMap)));
             Register<IPoolManager>(new PoolManager());
             Register<ISaveSystem>(new JsonFileSaveSystem());
             Register<IAudioManager>(new StubAudioManager());
