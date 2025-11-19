@@ -16,7 +16,7 @@ namespace Core.Services
                 contextListeners[context] = new List<(EventType, Action<object>)>();
             }
 
-            Services.Get<IEventsManager>().AddListener(eventType, method);
+            CoreServices.Get<IEventsManager>().AddListener(eventType, method);
             contextListeners[context].Add((eventType, method));
         }
         
@@ -27,7 +27,7 @@ namespace Core.Services
             var listenerToRemove = (eventType, method);
             if (listeners.Remove(listenerToRemove))
             {
-                Services.Get<IEventsManager>().RemoveListener(eventType, method);
+                CoreServices.Get<IEventsManager>().RemoveListener(eventType, method);
             }
 
             if (listeners.Count == 0)
@@ -42,7 +42,7 @@ namespace Core.Services
 
             foreach (var (eventType, method) in listeners)
             {
-                Services.Get<IEventsManager>().RemoveListener(eventType, method);
+                CoreServices.Get<IEventsManager>().RemoveListener(eventType, method);
             }
 
             contextListeners.Remove(context);
@@ -54,7 +54,7 @@ namespace Core.Services
             {
                 foreach (var (eventType, method) in listeners)
                 {
-                    Services.Get<IEventsManager>().RemoveListener(eventType, method);
+                    CoreServices.Get<IEventsManager>().RemoveListener(eventType, method);
                 }
             }
 
