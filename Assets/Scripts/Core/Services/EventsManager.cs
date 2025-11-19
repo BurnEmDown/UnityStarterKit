@@ -12,9 +12,9 @@ namespace Core.Services
         private ConcurrentQueue<Action> actionQueue = new(); // Queue for actions
         private bool isProcessingQueue = false;
 
-        public Dictionary<EventType, EventListenerData.EventListenersData> ListenersData = new();
+        public Dictionary<IEventType, EventListenerData.EventListenersData> ListenersData = new();
         
-        public void AddListener(EventType eventType, Action<object> additionalData)
+        public void AddListener(IEventType eventType, Action<object> additionalData)
         {
             actionQueue.Enqueue(() =>
             {
@@ -30,7 +30,7 @@ namespace Core.Services
             TryProcessQueue();
         }
 
-        public void RemoveListener(EventType eventType, Action<object> actionToRemove)
+        public void RemoveListener(IEventType eventType, Action<object> actionToRemove)
         {
             actionQueue.Enqueue(() =>
             {
@@ -47,7 +47,7 @@ namespace Core.Services
             TryProcessQueue();
         }
 
-        public void InvokeEvent(EventType eventType, object dataToInvoke)
+        public void InvokeEvent(IEventType eventType, object dataToInvoke)
         {
             actionQueue.Enqueue(() =>
             {

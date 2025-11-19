@@ -5,8 +5,8 @@ namespace Core.Interfaces
 {
     public interface IEventsManager
     {
-        void AddListener(EventType eventType, Action<object> additionalData);
-        void RemoveListener(EventType eventType, Action<object> actionToRemove);
-        void InvokeEvent(EventType eventType, object dataToInvoke);
+        void AddListener(IEventType eventType, Action<object> additionalData);
+        void RemoveListener(IEventType eventType, Action<object> actionToRemove);
+        void InvokeEvent(IEventType eventType, object dataToInvoke);
     }
 }

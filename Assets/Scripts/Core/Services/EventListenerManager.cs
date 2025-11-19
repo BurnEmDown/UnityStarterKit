@@ -7,20 +7,20 @@ namespace Core.Services
 {
     public class EventListenerManager : IEventListenerManager
     {
-        private static readonly Dictionary<object, List<(EventType eventType, Action<object> method)>> contextListeners = new();
+        private static readonly Dictionary<object, List<(IEventType eventType, Action<object> method)>> contextListeners = new();
 
-        public void AddListener(object context, EventType eventType, Action<object> method)
+        public void AddListener(object context, IEventType eventType, Action<object> method)
         {
             if (!contextListeners.ContainsKey(context))
             {
-                contextListeners[context] = new List<(EventType, Action<object>)>();
+                contextListeners[context] = new List<(IEventType, Action<object>)>();
             }
 
             CoreServices.Get<IEventsManager>().AddListener(eventType, method);
             contextListeners[context].Add((eventType, method));
         }
         
-        public void RemoveListener(object context, EventType eventType, Action<object> method)
+        public void RemoveListener(object context, IEventType eventType, Action<object> method)
         {
             if (!contextListeners.TryGetValue(context, out var listeners)) return;
 
