@@ -1,27 +1,27 @@
 using System.Collections.Generic;
-using DefaultNamespace;
+using Core.UpdateManagers.Interfaces;
 using UnityEngine;
 
-namespace Gameplay.Managers.UpdateManagers
+namespace Core.UpdateManagers
 {
-    public class LateUpdateManager : MonoBehaviour
+    public class UpdateManager : MonoBehaviour
     {
-        private static List<ILateUpdateObserver> observers = new List<ILateUpdateObserver>();
-        private static List<ILateUpdateObserver> pendingObservers = new List<ILateUpdateObserver>();
+        private static List<IUpdateObserver> observers = new List<IUpdateObserver>();
+        private static List<IUpdateObserver> pendingObservers = new List<IUpdateObserver>();
         private static int currentIndex;
 
-        private void LateUpdate()
+        private void Update()
         {
             for (currentIndex = observers.Count-1; currentIndex >= 0; currentIndex--)
             {
-                observers[currentIndex].ObservedLateUpdate();
+                observers[currentIndex].ObservedUpdate();
             }
             
             observers.AddRange(pendingObservers);
             pendingObservers.Clear();
         }
         
-        public static void RegisterObserver(ILateUpdateObserver observer)
+        public static void RegisterObserver(IUpdateObserver observer)
         {
             if (!observers.Contains(observer) && !pendingObservers.Contains(observer))
             {
@@ -33,7 +33,7 @@ namespace Gameplay.Managers.UpdateManagers
             }
         }
 
-        public static void UnregisterObserver(ILateUpdateObserver observer)
+        public static void UnregisterObserver(IUpdateObserver observer)
         {
             int index = observers.IndexOf(observer);
             if (index >= 0)

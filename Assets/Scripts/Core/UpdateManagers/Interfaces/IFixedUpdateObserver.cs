@@ -1,4 +1,4 @@
-namespace Gameplay.Interfaces
+namespace Core.UpdateManagers.Interfaces
 {
     public interface IFixedUpdateObserver
     {

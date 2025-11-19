@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Gameplay.Interfaces;
+using Core.UpdateManagers.Interfaces;
 using UnityEngine;
 
-namespace Gameplay.Managers.UpdateManagers
+namespace Core.UpdateManagers
 {
     public class FixedUpdateManager : MonoBehaviour
     {

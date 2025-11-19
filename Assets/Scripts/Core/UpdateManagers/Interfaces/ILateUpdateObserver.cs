@@ -1,4 +1,4 @@
-namespace DefaultNamespace
+namespace Core.UpdateManagers.Interfaces
 {
     public interface ILateUpdateObserver
     {
