@@ -23,7 +23,7 @@ namespace Core.Services
         
         public async void InitPool<T>(string originalName, int amount) where T : Component
         {
-            var generatedObjects = await Services.Get<IObjectFactory>().CreateManyAsync<T>(originalName, amount);
+            var generatedObjects = await CoreServices.Get<IObjectFactory>().CreateManyAsync<T>(originalName, amount);
 
             if (generatedObjects == null || !generatedObjects.Any())
             {
@@ -49,7 +49,7 @@ namespace Core.Services
             PoolData poolData = pools[poolName];
             if (!poolData.availableItems.Any())
             {
-                Services.Get<IObjectFactory>().CreateAsync<T>(poolName).ContinueWithOnMainThread(
+                CoreServices.Get<IObjectFactory>().CreateAsync<T>(poolName).ContinueWithOnMainThread(
                     task =>
                     {
                         if (task.IsFaulted || task.Result == null)

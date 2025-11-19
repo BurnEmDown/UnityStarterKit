@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Core.Services
 {
-    public static class Services
+    public static class CoreServices
     {
         private static readonly Dictionary<Type, object> services = new();
 

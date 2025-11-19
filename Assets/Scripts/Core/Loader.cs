@@ -4,7 +4,7 @@ using Core.Services;
 using Core.StubServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Core.Services.Services;
+using static Core.Services.CoreServices;
 
 namespace Core
 {
