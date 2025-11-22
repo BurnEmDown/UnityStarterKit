@@ -5,6 +5,70 @@ A lightweight, modular, production-ready foundation for starting new Unity games
 UnityStarterKit provides a clean architecture with essential systems, service-based patterns, update managers, factories, pooling, saves, optional Firebase integrations, and more — so you can focus on gameplay instead of boilerplate.
 
 ---
+
+## 🚀 Getting Started
+1. Clone the repository
+git clone https://github.com/BurnEmDown/UnityStarterKit.git
+
+2. Open in Unity (Version: Unity 6 (or newer)).
+
+3. Configure services in your bootstrapper
+
+In your Loader or equivalent script, register services:
+
+```
+// Basic services
+Services.Register<IAudioManager>(new StubAudioManager());
+Services.Register<ILocalizationService>(new StubLocalizationService());
+Services.Register<ISaveSystem>(new JsonFileSaveSystem());
+
+// Factories & pooling
+Services.Register<IObjectFactory>(() => 
+    new CompositeFactory(
+        new AddressablesFactory(),
+        new PrefabFactory(PrefabMap)
+    )
+);
+Services.Register<IPoolManager>(() => 
+    new PoolManager(Services.Get<IObjectFactory>())
+);
+
+// Events & time
+Services.Register<IEventsManager>(new EventsManager());
+Services.Register<IEventListenerManager>(
+    () => new EventListenerManager(Services.Get<IEventsManager>())
+);
+Services.Register<ITimeService>(new DefaultTimeService());
+Services.Register<ISceneLoader>(new DefaultSceneLoader());
+
+// Analytics / crash / remote config stubs by default
+Services.Register<IAnalyticsService>(new StubAnalyticsService());
+Services.Register<ICrashReportingService>(new StubCrashReportingService());
+Services.Register<IRemoteConfigService>(new StubRemoteConfigService());
+
+// Optional: override stubs with Firebase-backed services
+await FirebaseInitializer.InitializeAndOverrideServicesAsync();
+```
+
+4. Use services in gameplay code
+```
+var audio = Services.Get<IAudioManager>();
+audio.PlaySfx("button_click");
+
+var saves = Services.Get<ISaveSystem>();
+saves.Save("player", new PlayerData { Level = 3 });
+
+var events = Services.Get<IEventsManager>();
+events.InvokeEvent(GameEventType.LevelCompleted, null);
+
+var timeService = Services.Get<ITimeService>();
+if (pauseRequested)
+{
+    timeService.Pause();
+}
+```
+
+---
 ## ✨ Features Overview
 
 ### 🧩 Modular Service Architecture
@@ -285,75 +349,12 @@ Minimal External Dependencies
 
 ---
 
-## 🚀 Getting Started
-1. Clone the repository
-git clone https://github.com/BurnEmDown/UnityStarterKit.git
-
-2. Open in Unity
-
-Recommended: Unity 6 (or newer).
-
-3. Configure services in your bootstrapper
-
-In your Loader or equivalent script, register services:
-
-```
-// Basic services
-Services.Register<IAudioManager>(new StubAudioManager());
-Services.Register<ILocalizationService>(new StubLocalizationService());
-Services.Register<ISaveSystem>(new JsonFileSaveSystem());
-
-// Factories & pooling
-Services.Register<IObjectFactory>(() => 
-    new CompositeFactory(
-        new AddressablesFactory(),
-        new PrefabFactory(PrefabMap)
-    )
-);
-Services.Register<IPoolManager>(() => 
-    new PoolManager(Services.Get<IObjectFactory>())
-);
-
-// Events & time
-Services.Register<IEventsManager>(new EventsManager());
-Services.Register<IEventListenerManager>(
-    () => new EventListenerManager(Services.Get<IEventsManager>())
-);
-Services.Register<ITimeService>(new DefaultTimeService());
-Services.Register<ISceneLoader>(new DefaultSceneLoader());
-
-// Analytics / crash / remote config stubs by default
-Services.Register<IAnalyticsService>(new StubAnalyticsService());
-Services.Register<ICrashReportingService>(new StubCrashReportingService());
-Services.Register<IRemoteConfigService>(new StubRemoteConfigService());
-
-// Optional: override stubs with Firebase-backed services
-await FirebaseInitializer.InitializeAndOverrideServicesAsync();
-```
-
-4. Use services in gameplay code
-```
-var audio = Services.Get<IAudioManager>();
-audio.PlaySfx("button_click");
-
-var saves = Services.Get<ISaveSystem>();
-saves.Save("player", new PlayerData { Level = 3 });
-
-var events = Services.Get<IEventsManager>();
-events.InvokeEvent(GameEventType.LevelCompleted, null);
-
-var timeService = Services.Get<ITimeService>();
-if (pauseRequested)
-{
-    timeService.Pause();
-}
-```
-
 
 ## 🗂 Folder Structure (Simplified)
 
 A typical layout:
 
+```
 Assets/
   Scripts/
     Core/
@@ -369,8 +370,7 @@ Assets/
       UpdateManagers/
     Gameplay/
     Editor/
-    Integrations/   (if you add more external systems)
-
+```
 
 /Core is intended to be reused as-is between projects.
 
