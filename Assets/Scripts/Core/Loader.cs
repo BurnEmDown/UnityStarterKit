@@ -19,6 +19,12 @@ namespace Core
         // Add non-addressable prefabs here via Inspector if they need to be created via factory
         [SerializeField] private Dictionary<string, GameObject> PrefabMap;
         
+        // Set the base URL for your backend API here
+        [SerializeField] private string baseUrl = "https://api.example.com";
+
+        // Set your api endpoint mappings here for networking
+        [SerializeField] private Dictionary<string, string> apiMap;
+        
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -60,6 +66,9 @@ namespace Core
             // Scene loading & time service
             Register<ISceneLoader>(() => new DefaultSceneLoader());
             Register<ITimeService>(() => new DefaultTimeService());
+            
+            // Networking
+            Register<INetworkManager>(() => new DefaultNetworkManager(baseUrl, apiMap));
 
             // Analytics / remote config / crash reporting (stubs for now)
             Register<IAnalyticsService>(() => new StubAnalyticsService());
